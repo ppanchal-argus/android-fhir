@@ -131,7 +131,7 @@ open class QuestionnaireFragment : Fragment() {
             questionnaireReviewRecyclerView.visibility = View.VISIBLE
 
             // Set button visibility
-            submitButton.visibility = View.GONE
+            submitButton.visibility = if(viewModel.getIsReadOnly()) View.GONE else View.VISIBLE
             reviewModeButton.visibility = View.GONE
             reviewModeEditButton.visibility =
               if (displayMode.showEditButton) {
