@@ -205,9 +205,7 @@ class FhirOperator(fhirContext: FhirContext, fhirEngine: FhirEngine) {
   fun evaluateLibrary(
     libraryUrl: String,
     patientId: String,
-    expressions: Set<String>,
-    parameters: IBaseParameters? = null
-  ): IBaseParameters {
+    expressions: Set<String>): IBaseParameters {
     return evaluateLibrary(libraryUrl, patientId, null, expressions)
   }
 
