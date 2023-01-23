@@ -199,12 +199,14 @@ class FhirOperator(fhirContext: FhirContext, fhirEngine: FhirEngine) {
    * @param libraryUrl the url of the Library to evaluate
    * @param patientId the Id of the patient to be evaluated
    * @param expressions names of expressions in the Library to evaluate.
+   * @param parameters additional Parameters to set for the Library
    * @return a Parameters resource that contains an evaluation result for each expression requested
    */
   fun evaluateLibrary(
     libraryUrl: String,
     patientId: String,
-    expressions: Set<String>
+    expressions: Set<String>,
+    parameters: IBaseParameters? = null
   ): IBaseParameters {
     return evaluateLibrary(libraryUrl, patientId, null, expressions)
   }
