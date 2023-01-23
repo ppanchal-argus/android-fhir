@@ -68,7 +68,7 @@ class QuestionnaireValidationErrorMessageDialogFragmentTest {
 
     assertThat(result.findViewById<TextView>(R.id.dialog_title).text).isEqualTo("Errors found")
     assertThat(result.findViewById<TextView>(R.id.dialog_subtitle).text)
-      .isEqualTo("Fix the following questions:")
+      .isEqualTo("Please answer all mandatory questions:")
     assertThat(result.findViewById<TextView>(R.id.body).text).isEqualTo("• First Name")
   }
 

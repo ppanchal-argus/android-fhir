@@ -77,7 +77,7 @@
     <string name="questionnaire_validation_error_headline">Errors found</string>
     <string
         name="questionnaire_validation_error_supporting_text"
-    >Fix the following questions:</string>
+    >Please answer all mandatory questions:</string>
     <string
         name="questionnaire_validation_error_item_text_with_bullet"
     >• %s</string>
