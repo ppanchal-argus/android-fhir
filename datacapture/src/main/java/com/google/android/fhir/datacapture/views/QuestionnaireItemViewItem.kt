@@ -28,6 +28,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.hl7.fhir.r4.model.Questionnaire
 import org.hl7.fhir.r4.model.QuestionnaireResponse
+import org.hl7.fhir.r4.model.Quantity
+import org.hl7.fhir.r4.model.Extension
+import org.hl7.fhir.r4.model.Coding
 
 /**
  * Data item for [QuestionnaireItemViewHolder] in [RecyclerView].
@@ -100,6 +103,18 @@ data class QuestionnaireItemViewItem(
   ) {
     check(questionnaireItem.repeats || questionnaireResponseItemAnswerComponent.size <= 1) {
       "Questionnaire item with linkId ${questionnaireItem.linkId} has repeated answers."
+    }
+    /** add the unit from the extension */
+    if (!questionnaireItem.repeats && questionnaireItem.type === Questionnaire.QuestionnaireItemType.fromCode("quantity")) {
+      val unitExtensions = questionnaireItem.getExtensionsByUrl("http://hl7.org/fhir/StructureDefinition/questionnaire-unit")
+      if (unitExtensions.isNotEmpty()) {
+        val unitExtension: Extension = unitExtensions.first()
+        val unitCoding: Coding = unitExtension.castToCoding(unitExtension.value)
+        questionnaireResponseItemAnswerComponent.filter { it.value is Quantity && it.valueQuantity.code == null &&  it.valueQuantity.unit == null}.forEach {
+          it.valueQuantity.code = unitCoding.code
+          it.valueQuantity.system = unitCoding.system
+        }
+      }
     }
     answersChangedCallback(
       questionnaireItem,
