@@ -30,6 +30,7 @@ import org.hl7.fhir.r4.model.Expression
 import org.hl7.fhir.r4.model.Questionnaire
 import org.hl7.fhir.r4.model.QuestionnaireResponse
 import org.hl7.fhir.r4.model.Type
+import org.hl7.fhir.r4.model.Quantity
 import org.hl7.fhir.r4.utils.FHIRPathEngine
 import timber.log.Timber
 
@@ -370,6 +371,20 @@ object ExpressionEvaluator {
         "Unsupported expression language, language should be text/fhirpath"
       }
 
+      dependentVariables.forEach{ (_, data) ->
+        if (data is Quantity && data.hasCode()){
+         when(data.code){
+           "mo" -> {
+             data.unit = "month"
+             data.code = null
+           }
+           "a" -> {
+             data.unit = "year"
+             data.code = null
+           }
+         }
+        }
+      }
       fhirPathEngine
         .evaluate(dependentVariables, questionnaireResponse, null, null, expression.expression)
         .firstOrNull()
