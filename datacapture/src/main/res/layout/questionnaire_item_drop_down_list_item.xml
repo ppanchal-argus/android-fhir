@@ -11,14 +11,20 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<TextView
+<com.google.android.material.textfield.TextInputEditText
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/answer_option_textview"
+    android:background="@color/transparent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:drawablePadding="@dimen/item_margin_horizontal"
     android:ellipsize="end"
     android:maxLines="1"
     android:padding="@dimen/padding_drop_down"
+    android:clickable="false"
+    android:cursorVisible="false"
+    android:inputType="textNoSuggestions"
+    android:focusable="false"
+    android:singleLine="true"
     android:textAppearance="?attr/questionnaireDropDownTextStyle"
 />
