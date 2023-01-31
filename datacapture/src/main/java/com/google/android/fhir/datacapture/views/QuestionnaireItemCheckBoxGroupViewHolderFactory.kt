@@ -16,6 +16,7 @@
 
 package com.google.android.fhir.datacapture.views
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +33,7 @@ import com.google.android.fhir.datacapture.validation.Invalid
 import com.google.android.fhir.datacapture.validation.NotValidated
 import com.google.android.fhir.datacapture.validation.Valid
 import com.google.android.fhir.datacapture.validation.ValidationResult
+import com.google.android.material.card.MaterialCardView
 import org.hl7.fhir.r4.model.Questionnaire
 import org.hl7.fhir.r4.model.QuestionnaireResponse
 
@@ -42,12 +44,14 @@ internal object QuestionnaireItemCheckBoxGroupViewHolderFactory :
       private lateinit var header: QuestionnaireItemHeaderView
       private lateinit var checkboxGroup: ConstraintLayout
       private lateinit var flow: Flow
+      private lateinit var checkboxCardView: MaterialCardView
       override lateinit var questionnaireItemViewItem: QuestionnaireItemViewItem
 
       override fun init(itemView: View) {
         header = itemView.findViewById(R.id.header)
         checkboxGroup = itemView.findViewById(R.id.checkbox_group)
         flow = itemView.findViewById(R.id.checkbox_flow)
+        checkboxCardView = itemView.findViewById(R.id.checkboxCardView)
       }
 
       override fun bind(questionnaireItemViewItem: QuestionnaireItemViewItem) {
@@ -68,6 +72,13 @@ internal object QuestionnaireItemCheckBoxGroupViewHolderFactory :
             flow.setOrientation(Flow.VERTICAL)
             flow.setWrapMode(Flow.WRAP_NONE)
           }
+        }
+        if (questionnaireItemViewItem.answerOption.size == 1) {
+          checkboxCardView.strokeWidth = 0
+          checkboxCardView.setCardBackgroundColor(Color.parseColor("#00000000"))
+        } else {
+          checkboxCardView.strokeWidth = 2
+          checkboxCardView.setCardBackgroundColor(Color.parseColor("#FFFFFF"))
         }
         questionnaireItemViewItem.answerOption
           .map { answerOption -> View.generateViewId() to answerOption }

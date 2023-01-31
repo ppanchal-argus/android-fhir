@@ -18,6 +18,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginHorizontal="@dimen/item_margin_horizontal"
     android:layout_marginTop="@dimen/padding_default"
     android:orientation="vertical"
@@ -29,28 +30,34 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/padding_default"
     />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/checkbox_group"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/checkboxCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/Widget.Material3.CardView.Outlined"
+        app:strokeColor="#A6A6A6"
+        app:strokeWidth="2dp"
     >
-
-        <androidx.constraintlayout.helper.widget.Flow
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/checkbox_flow"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/checkbox_group"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:flow_horizontalBias="0"
-            app:flow_horizontalGap="@dimen/radio_button_item_gap"
-            app:flow_verticalGap="@dimen/padding_default"
-            app:flow_horizontalStyle="packed"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-        />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        >
+            <androidx.constraintlayout.helper.widget.Flow
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/checkbox_flow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:flow_horizontalBias="0"
+                app:flow_horizontalGap="@dimen/radio_button_item_gap"
+                app:flow_verticalGap="@dimen/padding_default"
+                app:flow_horizontalStyle="packed"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+            />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 
 </LinearLayout>
