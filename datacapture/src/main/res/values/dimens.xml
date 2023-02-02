@@ -15,6 +15,7 @@
  limitations under the License.
 -->
 <resources>
+    <dimen name="header_item_padding">5dp</dimen>
     <dimen name="item_margin_horizontal">16dp</dimen>
     <dimen name="item_margin_vertical">8dp</dimen>
     <dimen name="prefix_padding_end">5dp</dimen>
