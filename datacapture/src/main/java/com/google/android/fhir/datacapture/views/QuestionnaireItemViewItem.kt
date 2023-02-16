@@ -57,6 +57,7 @@ import org.hl7.fhir.r4.model.Coding
  * @param resolveAnswerValueSet the callback to resolve the answer value set and return the answer
  * @param resolveAnswerExpression the callback to resolve answer options when answer-expression
  * extension exists options
+ * @param partialAnswer the entered input is not a valid answer.
  */
 data class QuestionnaireItemViewItem(
   val questionnaireItem: Questionnaire.QuestionnaireItemComponent,
@@ -66,7 +67,8 @@ data class QuestionnaireItemViewItem(
     (
       Questionnaire.QuestionnaireItemComponent,
       QuestionnaireResponse.QuestionnaireResponseItemComponent,
-      List<QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent>
+      List<QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent>,
+      Any?
     ) -> Unit,
   private val resolveAnswerValueSet:
     suspend (String) -> List<Questionnaire.QuestionnaireItemAnswerOptionComponent> =
@@ -78,7 +80,8 @@ data class QuestionnaireItemViewItem(
         Questionnaire.QuestionnaireItemAnswerOptionComponent> =
     {
       emptyList()
-    }
+    },
+  internal val partialAnswer: Any? = null
 ) {
 
   /**
@@ -119,13 +122,24 @@ data class QuestionnaireItemViewItem(
     answersChangedCallback(
       questionnaireItem,
       questionnaireResponseItem,
-      questionnaireResponseItemAnswerComponent.toList()
+      questionnaireResponseItemAnswerComponent.toList(),
+      null
     )
   }
 
   /** Clears existing answers. */
   fun clearAnswer() {
-    answersChangedCallback(questionnaireItem, questionnaireResponseItem, listOf())
+    answersChangedCallback(questionnaireItem, questionnaireResponseItem, listOf(), null)
+  }
+
+  /**
+   * Updates the partial answer in the cache [QuestionnaireViewModel.partialAnswerCache]. The cache
+   * only contain partial answers. If the partial answers for
+   * [QuestionnaireResponse.QuestionnaireResponseItemComponent] are updated in the cache, then
+   * [QuestionnaireResponse.QuestionnaireResponseItemComponent] will not have any answers.
+   */
+  fun updatePartialAnswer(partialAnswer: Any? = null) {
+    answersChangedCallback(questionnaireItem, questionnaireResponseItem, listOf(), partialAnswer)
   }
 
   /** Adds an answer to the existing answers. */
@@ -139,7 +153,8 @@ data class QuestionnaireItemViewItem(
     answersChangedCallback(
       questionnaireItem,
       questionnaireResponseItem,
-      answers + questionnaireResponseItemAnswerComponent
+      answers + questionnaireResponseItemAnswerComponent,
+      null
     )
   }
 
@@ -156,7 +171,8 @@ data class QuestionnaireItemViewItem(
       questionnaireResponseItem,
       answers.toMutableList().apply {
         removeIf { it.value.equalsDeep(questionnaireResponseItemAnswerComponent.value) }
-      }
+      },
+      null
     )
   }
 
