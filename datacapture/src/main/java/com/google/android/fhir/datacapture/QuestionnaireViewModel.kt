@@ -71,7 +71,7 @@ internal class QuestionnaireViewModel(application: Application, state: SavedStat
           if (state.contains(QuestionnaireFragment.EXTRA_QUESTIONNAIRE_JSON_STRING)) {
             Timber.w(
               "Both EXTRA_QUESTIONNAIRE_JSON_URI & EXTRA_QUESTIONNAIRE_JSON_STRING are provided. " +
-                      "EXTRA_QUESTIONNAIRE_JSON_URI takes precedence."
+                "EXTRA_QUESTIONNAIRE_JSON_URI takes precedence."
             )
           }
           val uri: Uri = state[QuestionnaireFragment.EXTRA_QUESTIONNAIRE_JSON_URI]!!
@@ -101,13 +101,13 @@ internal class QuestionnaireViewModel(application: Application, state: SavedStat
         if (state.contains(QuestionnaireFragment.EXTRA_QUESTIONNAIRE_RESPONSE_JSON_STRING)) {
           Timber.w(
             "Both EXTRA_QUESTIONNAIRE_RESPONSE_JSON_URI & EXTRA_QUESTIONNAIRE_RESPONSE_JSON_STRING are provided. " +
-                    "EXTRA_QUESTIONNAIRE_RESPONSE_JSON_URI takes precedence."
+              "EXTRA_QUESTIONNAIRE_RESPONSE_JSON_URI takes precedence."
           )
         }
         val uri: Uri = state[QuestionnaireFragment.EXTRA_QUESTIONNAIRE_RESPONSE_JSON_URI]!!
         questionnaireResponse =
           parser.parseResource(application.contentResolver.openInputStream(uri))
-                  as QuestionnaireResponse
+            as QuestionnaireResponse
         checkQuestionnaireResponse(questionnaire, questionnaireResponse)
       }
       state.contains(QuestionnaireFragment.EXTRA_QUESTIONNAIRE_RESPONSE_JSON_STRING) -> {
@@ -133,7 +133,7 @@ internal class QuestionnaireViewModel(application: Application, state: SavedStat
 
   /** The map from each item in the [Questionnaire] to its parent. */
   private var questionnaireItemParentMap:
-          Map<Questionnaire.QuestionnaireItemComponent, Questionnaire.QuestionnaireItemComponent>
+    Map<Questionnaire.QuestionnaireItemComponent, Questionnaire.QuestionnaireItemComponent>
 
   init {
     /** Adds each child-parent pair in the [Questionnaire] to the parent map. */
@@ -156,9 +156,7 @@ internal class QuestionnaireViewModel(application: Application, state: SavedStat
 
   /** Flag to determine if the questionnaire should be read-only. */
   private val isReadOnly = state[QuestionnaireFragment.EXTRA_READ_ONLY] ?: false
-  fun getIsReadOnly(): Boolean {
-    return isReadOnly
-  }
+
   /** Flag to support fragment for review-feature */
   private val shouldEnableReviewPage =
     state[QuestionnaireFragment.EXTRA_ENABLE_REVIEW_PAGE] ?: false
@@ -298,10 +296,10 @@ internal class QuestionnaireViewModel(application: Application, state: SavedStat
    */
   internal fun validateQuestionnaireAndUpdateUI(): Map<String, List<ValidationResult>> =
     QuestionnaireResponseValidator.validateQuestionnaireResponse(
-      questionnaire,
-      questionnaireResponse,
-      getApplication()
-    )
+        questionnaire,
+        questionnaireResponse,
+        getApplication()
+      )
       .also { result ->
         if (result.values.flatten().filterIsInstance<Invalid>().isNotEmpty()) {
           hasPressedSubmitButton = true
@@ -371,30 +369,30 @@ internal class QuestionnaireViewModel(application: Application, state: SavedStat
   /** [QuestionnaireState] to be displayed in the UI. */
   internal val questionnaireStateFlow: StateFlow<QuestionnaireState> =
     combine(modificationCount, currentPageIndexFlow, isInReviewModeFlow) { _, _, _ ->
-      getQuestionnaireState()
-    }
+        getQuestionnaireState()
+      }
       .stateIn(
         viewModelScope,
         SharingStarted.Lazily,
         initialValue =
-        getQuestionnaireState()
-          .also { detectExpressionCyclicDependency(questionnaire.item) }
-          .also {
-            questionnaire.item.flattened().forEach {
-              updateDependentQuestionnaireResponseItems(it)
+          getQuestionnaireState()
+            .also { detectExpressionCyclicDependency(questionnaire.item) }
+            .also {
+              questionnaire.item.flattened().forEach {
+                updateDependentQuestionnaireResponseItems(it)
+              }
             }
-          }
       )
 
   private fun updateDependentQuestionnaireResponseItems(
     updatedQuestionnaireItem: Questionnaire.QuestionnaireItemComponent,
   ) {
     evaluateCalculatedExpressions(
-      updatedQuestionnaireItem,
-      questionnaire,
-      questionnaireResponse,
-      questionnaireItemParentMap
-    )
+        updatedQuestionnaireItem,
+        questionnaire,
+        questionnaireResponse,
+        questionnaireItemParentMap
+      )
       .forEach { (questionnaireItem, calculatedAnswers) ->
         // update all response item with updated values
         questionnaireResponse.allItems
@@ -402,7 +400,7 @@ internal class QuestionnaireViewModel(application: Application, state: SavedStat
           // https://build.fhir.org/ig/HL7/sdc/StructureDefinition-sdc-questionnaire-calculatedExpression.html
           .filter {
             it.linkId == questionnaireItem.linkId &&
-                    !modifiedQuestionnaireResponseItemSet.contains(it)
+              !modifiedQuestionnaireResponseItemSet.contains(it)
           }
           .forEach { questionnaireResponseItem ->
             // update and notify only if new answer has changed to prevent any event loop
@@ -430,8 +428,8 @@ internal class QuestionnaireViewModel(application: Application, state: SavedStat
         questionnaire.contained
           .firstOrNull { resource ->
             resource.id.equals(uri) &&
-                    resource.resourceType == ResourceType.ValueSet &&
-                    (resource as ValueSet).hasExpansion()
+              resource.resourceType == ResourceType.ValueSet &&
+              (resource as ValueSet).hasExpansion()
           }
           ?.let { resource ->
             val valueSet = resource as ValueSet
@@ -581,7 +579,7 @@ internal class QuestionnaireViewModel(application: Application, state: SavedStat
         // If there is an enabled questionnaire response available then we use that. Or else we
         // just use an empty questionnaireResponse Item
         if (responseIndex < questionnaireResponseItemList.size &&
-          questionnaireItem.linkId == questionnaireResponseItemList[responseIndex].linkId
+            questionnaireItem.linkId == questionnaireResponseItemList[responseIndex].linkId
         ) {
           questionnaireResponseItem = questionnaireResponseItemList[responseIndex]
           responseIndex += 1
@@ -616,8 +614,8 @@ internal class QuestionnaireViewModel(application: Application, state: SavedStat
     // Determine the validation result, which will be displayed on the item itself
     val validationResult =
       if (modifiedQuestionnaireResponseItemSet.contains(questionnaireResponseItem) ||
-        isPaginationButtonPressed ||
-        hasPressedSubmitButton
+          isPaginationButtonPressed ||
+          hasPressedSubmitButton
       ) {
         QuestionnaireResponseItemValidator.validate(
           questionnaireItem,
@@ -716,7 +714,7 @@ internal class QuestionnaireViewModel(application: Application, state: SavedStat
       .flatMap { (questionnaireItem, questionnaireResponseItem) ->
         val isRepeatedGroup =
           questionnaireItem.type == Questionnaire.QuestionnaireItemType.GROUP &&
-                  questionnaireItem.repeats
+            questionnaireItem.repeats
         if (isRepeatedGroup) {
           createRepeatedGroupResponse(questionnaireItem, questionnaireResponseItem)
         } else {
@@ -793,7 +791,7 @@ internal class QuestionnaireViewModel(application: Application, state: SavedStat
 }
 
 typealias ItemToParentMap =
-        MutableMap<Questionnaire.QuestionnaireItemComponent, Questionnaire.QuestionnaireItemComponent>
+  MutableMap<Questionnaire.QuestionnaireItemComponent, Questionnaire.QuestionnaireItemComponent>
 
 /** Questionnaire state for the Fragment to consume. */
 internal data class QuestionnaireState(
