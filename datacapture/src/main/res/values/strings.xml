@@ -90,4 +90,6 @@
     <string
         name="questionnaire_validation_error_fix_button_text"
     >Fix questions</string>
+    <string name="text_view_more">View More</string>
+    <string name="text_view_less">View Less</string>
 </resources>

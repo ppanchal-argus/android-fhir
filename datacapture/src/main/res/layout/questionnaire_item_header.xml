@@ -86,6 +86,7 @@
             android:layout_height="wrap_content"
             android:background="?attr/colorSurfaceVariant"
             android:orientation="vertical"
+            android:paddingBottom="@dimen/help_margin_bottom"
         >
             <TextView
                 style="?attr/questionnaireHelpHeaderStyle"
@@ -100,11 +101,22 @@
                 android:id="@+id/helpText"
                 style="?attr/questionnaireHelpTextStyle"
                 android:layout_marginHorizontal="@dimen/help_header_horizontal_margin"
-                android:layout_marginBottom="@dimen/help_margin_bottom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="Sample helper text"
+                android:maxLines="2"
             />
+            <TextView
+                android:id="@+id/textviewViewMore"
+                style="?attr/questionnaireHelpTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:visibility="gone"
+                android:paddingHorizontal="@dimen/help_header_horizontal_margin"
+                android:layout_marginTop="@dimen/help_header_margin_bottom"
+            />
+
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 

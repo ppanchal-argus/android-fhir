@@ -122,12 +122,52 @@ internal fun initHelpButton(
       helpCardView.visibility = VISIBLE
     }
   }
-
-  view
-    .findViewById<TextView>(R.id.helpText)
-    .updateTextAndVisibility(questionnaireItem.localizedHelpSpanned)
+  val originalText: CharSequence
+  var textViewHelpText = view.findViewById<TextView>(R.id.helpText)
+  textViewHelpText.updateTextAndVisibility(questionnaireItem.localizedHelpSpanned)
+  var textViewViewMore = view.findViewById<TextView>(R.id.textviewViewMore)
+  originalText = textViewHelpText.text
+  // Check if the TextView needs to be expanded or collapsed
+  //  textViewHelpText.viewTreeObserver.addOnGlobalLayoutListener(
+  //    object : ViewTreeObserver.OnGlobalLayoutListener {
+  //      override fun onGlobalLayout() {
+  //        // Remove the listener to avoid multiple calls
+  //        textViewHelpText.viewTreeObserver.removeOnGlobalLayoutListener(this)
+  //        // Check if the TextView needs to be expanded or collapsed
+  //        textViewHelpText.measure(
+  //          View.MeasureSpec.makeMeasureSpec(textViewHelpText.width, View.MeasureSpec.EXACTLY),
+  //          View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+  //        )
+  //
+  //        if (textViewHelpText.lineCount > textViewHelpText.maxLines) {
+  //          textViewViewMore.visibility = VISIBLE
+  //        }
+  //      }
+  //    }
+  //  )
+  // Set a click listener on the TextView and the "View More" text view
+  textViewHelpText.setOnClickListener { toggle(textViewHelpText, textViewViewMore, originalText) }
+  //  textViewViewMore.setOnClickListener { toggle(textViewHelpText, textViewViewMore, originalText)
+  // }
 }
 
+private fun toggle(
+  textViewContent: TextView,
+  textViewViewMore: TextView,
+  originalText: CharSequence
+) {
+  if (textViewContent.maxLines == 2) {
+    textViewContent.text = originalText
+    //    textViewViewMore.text =
+    //      textViewContent.context.applicationContext.getString(R.string.text_view_less)
+    textViewContent.maxLines = Integer.MAX_VALUE
+  } else {
+    textViewContent.text = originalText
+    textViewContent.maxLines = 2
+    //    textViewViewMore.text =
+    //      textViewContent.context.applicationContext.getString(R.string.text_view_more)
+  }
+}
 /**
  * Updates textview [R.id.question] with
  * [Questionnaire.QuestionnaireItemComponent.localizedTextSpanned] text and `*` if
