@@ -17,7 +17,7 @@
 package com.google.android.fhir.datacapture.views
 
 import android.view.View
-import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.RadioButton
 import androidx.constraintlayout.helper.widget.Flow
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -140,12 +140,15 @@ internal object QuestionnaireItemBooleanTypePickerViewHolderFactory :
         choiceOrientation: ChoiceOrientationTypes
       ) {
         layoutParams =
-          ViewGroup.LayoutParams(
+          LinearLayout.LayoutParams(
             when (choiceOrientation) {
-              ChoiceOrientationTypes.HORIZONTAL -> ViewGroup.LayoutParams.WRAP_CONTENT
-              ChoiceOrientationTypes.VERTICAL -> ViewGroup.LayoutParams.MATCH_PARENT
+              ChoiceOrientationTypes.HORIZONTAL -> {
+                0
+              }
+              ChoiceOrientationTypes.VERTICAL -> LinearLayout.LayoutParams.MATCH_PARENT
             },
-            ViewGroup.LayoutParams.WRAP_CONTENT
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            1.0f
           )
       }
     }

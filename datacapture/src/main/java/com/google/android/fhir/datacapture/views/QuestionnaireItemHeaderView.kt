@@ -27,6 +27,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.ViewTreeObserver
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -112,7 +113,13 @@ internal fun initHelpButton(
       GONE
     }
   val helpCardView = view.findViewById<MaterialCardView>(R.id.helpCardView)
+  val originalText: CharSequence
+  var textViewHelpText = view.findViewById<TextView>(R.id.helpText)
+  textViewHelpText.updateTextAndVisibility(questionnaireItem.localizedHelpSpanned)
+  var textViewViewMore = view.findViewById<TextView>(R.id.textviewViewMore)
+  originalText = textViewHelpText.text
   var isHelpCardViewVisible = false
+  var isHelpTextLineCountSet = false
   helpButton.setOnClickListener {
     if (isHelpCardViewVisible) {
       isHelpCardViewVisible = false
@@ -120,35 +127,33 @@ internal fun initHelpButton(
     } else {
       isHelpCardViewVisible = true
       helpCardView.visibility = VISIBLE
+
+      if (!isHelpTextLineCountSet) {
+        // Check if the TextView needs to be expanded or collapsed
+        textViewHelpText.viewTreeObserver.addOnPreDrawListener(
+          object : ViewTreeObserver.OnPreDrawListener {
+            override fun onPreDraw(): Boolean {
+              textViewHelpText.viewTreeObserver.removeOnPreDrawListener(this)
+              if (textViewHelpText.lineCount > textViewHelpText.maxLines) {
+                textViewViewMore.visibility = VISIBLE
+                textViewViewMore.text =
+                  textViewViewMore.context.applicationContext.getString(R.string.text_view_more)
+              }
+              return true
+            }
+          }
+        )
+        // Set a click listener on the TextView and the "View More" text view
+        textViewHelpText.setOnClickListener {
+          toggle(textViewHelpText, textViewViewMore, originalText)
+        }
+        textViewViewMore.setOnClickListener {
+          toggle(textViewHelpText, textViewViewMore, originalText)
+        }
+        isHelpTextLineCountSet = true
+      }
     }
   }
-  val originalText: CharSequence
-  var textViewHelpText = view.findViewById<TextView>(R.id.helpText)
-  textViewHelpText.updateTextAndVisibility(questionnaireItem.localizedHelpSpanned)
-  var textViewViewMore = view.findViewById<TextView>(R.id.textviewViewMore)
-  originalText = textViewHelpText.text
-  // Check if the TextView needs to be expanded or collapsed
-  //  textViewHelpText.viewTreeObserver.addOnGlobalLayoutListener(
-  //    object : ViewTreeObserver.OnGlobalLayoutListener {
-  //      override fun onGlobalLayout() {
-  //        // Remove the listener to avoid multiple calls
-  //        textViewHelpText.viewTreeObserver.removeOnGlobalLayoutListener(this)
-  //        // Check if the TextView needs to be expanded or collapsed
-  //        textViewHelpText.measure(
-  //          View.MeasureSpec.makeMeasureSpec(textViewHelpText.width, View.MeasureSpec.EXACTLY),
-  //          View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-  //        )
-  //
-  //        if (textViewHelpText.lineCount > textViewHelpText.maxLines) {
-  //          textViewViewMore.visibility = VISIBLE
-  //        }
-  //      }
-  //    }
-  //  )
-  // Set a click listener on the TextView and the "View More" text view
-  textViewHelpText.setOnClickListener { toggle(textViewHelpText, textViewViewMore, originalText) }
-  //  textViewViewMore.setOnClickListener { toggle(textViewHelpText, textViewViewMore, originalText)
-  // }
 }
 
 private fun toggle(
@@ -158,14 +163,14 @@ private fun toggle(
 ) {
   if (textViewContent.maxLines == 2) {
     textViewContent.text = originalText
-    //    textViewViewMore.text =
-    //      textViewContent.context.applicationContext.getString(R.string.text_view_less)
+    textViewViewMore.text =
+      textViewContent.context.applicationContext.getString(R.string.text_view_less)
     textViewContent.maxLines = Integer.MAX_VALUE
   } else {
     textViewContent.text = originalText
     textViewContent.maxLines = 2
-    //    textViewViewMore.text =
-    //      textViewContent.context.applicationContext.getString(R.string.text_view_more)
+    textViewViewMore.text =
+      textViewContent.context.applicationContext.getString(R.string.text_view_more)
   }
 }
 /**
