@@ -13,20 +13,41 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingEnd="@dimen/prefix_padding_end"
-        app:layout_constraintEnd_toStartOf="@+id/question"
+        app:layout_constraintEnd_toStartOf="@+id/questionContainer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
     />
 
-    <TextView
-        android:id="@+id/question"
-        style="?attr/questionnaireQuestionTextStyle"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/questionContainer"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="horizontal"
         app:layout_constraintStart_toEndOf="@id/prefix"
         app:layout_constraintTop_toTopOf="parent"
-    />
+    >
+
+    <TextView
+            android:id="@+id/question"
+            style="?attr/questionnaireQuestionTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/prefix"
+            app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <Button
+            style="?attr/questionnaireHelpButtonStyle"
+            android:id="@+id/helpButton"
+            android:layout_width="@dimen/help_button_width"
+            android:layout_height="@dimen/help_button_width"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/help_button_margin_start"
+            app:icon="@drawable/ic_help_48px"
+            app:layout_constraintStart_toEndOf="@id/question"
+            app:layout_constraintTop_toTopOf="parent"
+        />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/helpContainer"
@@ -34,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/instructions_top_margin"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/question"
+        app:layout_constraintTop_toBottomOf="@id/questionContainer"
         app:layout_constraintStart_toStartOf="parent"
     >
 
@@ -47,16 +68,7 @@
             android:layout_gravity="center_vertical"
             tools:text="Sample helper text"
         />
-        <Button
-            style="?attr/questionnaireHelpButtonStyle"
-            android:id="@+id/helpButton"
-            android:layout_width="@dimen/help_button_width"
-            android:layout_height="@dimen/help_button_height"
-            android:layout_gravity="center_vertical"
-            android:layout_weight=".3"
-            android:layout_marginStart="@dimen/help_button_margin_start"
-            app:icon="@drawable/ic_help_48px"
-        />
+
     </LinearLayout>
     <TextView
         android:id="@+id/error_text_at_header"
