@@ -33,9 +33,9 @@ import com.google.android.fhir.datacapture.validation.Invalid
 import com.google.android.fhir.datacapture.validation.NotValidated
 import com.google.android.fhir.datacapture.validation.Valid
 import com.google.android.fhir.datacapture.validation.ValidationResult
-import com.google.android.material.card.MaterialCardView
 import com.google.android.fhir.datacapture.views.HeaderView
 import com.google.android.fhir.datacapture.views.QuestionnaireViewItem
+import com.google.android.material.card.MaterialCardView
 import org.hl7.fhir.r4.model.Questionnaire
 import org.hl7.fhir.r4.model.QuestionnaireResponse
 
@@ -75,7 +75,7 @@ internal object CheckBoxGroupViewHolderFactory :
             flow.setWrapMode(Flow.WRAP_NONE)
           }
         }
-        if (questionnaireItemViewItem.answerOption.size == 1) {
+        if (questionnaireViewItem.answerOption.size == 1) {
           checkboxCardView.strokeWidth = 0
           checkboxCardView.setCardBackgroundColor(Color.parseColor("#00000000"))
         } else {

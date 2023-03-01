@@ -14,18 +14,12 @@
     <!-- 1.2 Submit Pop-up -->
     <string name="questionnaire_validation_error_headline">Errors found</string>
     <string
-        name="questionnaire_validation_error_supporting_text"
-    >Fix the following questions:</string>
-    <string
         name="questionnaire_validation_error_item_text_with_bullet"
     >• %s</string>
     <string
         name="questionnaire_validation_error_submit_button_text"
     >Submit anyway</string>
-    <string
-        name="questionnaire_validation_error_fix_button_text"
-    >Fix questions</string>
-    
+
     <!-- 2. The following sections include strings used in widgets -->
 
     <!-- 2.1 All Widgets -->
