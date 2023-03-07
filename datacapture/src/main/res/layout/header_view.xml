@@ -120,6 +120,7 @@
             />
             <TextView
                 android:id="@+id/textviewViewMore"
+                android:textColor="#0000ae"
                 style="?attr/questionnaireHelpTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
