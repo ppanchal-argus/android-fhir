@@ -19,8 +19,10 @@ package com.google.android.fhir.datacapture.extensions
 import android.text.Spanned
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.ViewTreeObserver
 import android.widget.Button
 import android.widget.TextView
+import com.google.android.fhir.datacapture.R
 import com.google.android.material.card.MaterialCardView
 import org.hl7.fhir.r4.model.Questionnaire
 
@@ -51,6 +53,7 @@ internal fun initHelpViews(
   helpButton: Button,
   helpCardView: MaterialCardView,
   helpTextView: TextView,
+  helpTextViewMore: TextView,
   questionnaireItem: Questionnaire.QuestionnaireItemComponent
 ) {
   helpButton.visibility =
@@ -59,12 +62,47 @@ internal fun initHelpViews(
     } else {
       GONE
     }
+  helpTextView.updateTextAndVisibility(questionnaireItem.localizedHelpSpanned)
+  var isHelpTextLineCountSet = false
   helpButton.setOnClickListener {
     helpCardView.visibility =
       when (helpCardView.visibility) {
         VISIBLE -> GONE
         else -> VISIBLE
       }
+    if (helpCardView.visibility == VISIBLE && !isHelpTextLineCountSet) {
+      helpTextView.viewTreeObserver.addOnPreDrawListener(
+        object : ViewTreeObserver.OnPreDrawListener {
+          override fun onPreDraw(): Boolean {
+            helpTextView.viewTreeObserver.removeOnPreDrawListener(this)
+            if (helpTextView.lineCount > helpTextView.maxLines) {
+              helpTextViewMore.visibility = VISIBLE
+              helpTextViewMore.text =
+                helpTextViewMore.context.applicationContext.getString(R.string.text_view_more)
+            }
+            return true
+          }
+        }
+      )
+      // Set a click listener on the TextView and the "View More" text view
+      helpTextView.setOnClickListener { toggle(helpTextView, helpTextViewMore) }
+      helpTextViewMore.setOnClickListener { toggle(helpTextView, helpTextViewMore) }
+      isHelpTextLineCountSet = true
+    }
   }
-  helpTextView.updateTextAndVisibility(questionnaireItem.localizedHelpSpanned)
+}
+
+private fun toggle(
+  textViewContent: TextView,
+  textViewViewMore: TextView,
+) {
+  if (textViewContent.maxLines == 2) {
+    textViewViewMore.text =
+      textViewContent.context.applicationContext.getString(R.string.text_view_less)
+    textViewContent.maxLines = Integer.MAX_VALUE
+  } else {
+    textViewContent.maxLines = 2
+    textViewViewMore.text =
+      textViewContent.context.applicationContext.getString(R.string.text_view_more)
+  }
 }
