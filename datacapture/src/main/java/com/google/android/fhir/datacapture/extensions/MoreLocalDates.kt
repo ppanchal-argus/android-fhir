@@ -53,7 +53,7 @@ internal fun canonicalizeDatePattern(datePattern: String): String {
       }
       'm' -> {
         if (!hasMonth) {
-          newDatePattern.append("mm")
+          newDatePattern.append("MM")
           hasMonth = true
         }
       }

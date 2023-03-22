@@ -112,7 +112,7 @@ internal object DatePickerViewHolderFactory :
       override fun bind(questionnaireViewItem: QuestionnaireViewItem) {
         clearPreviousState()
         header.bind(questionnaireViewItem)
-        textInputLayout.hint = canonicalizedDatePattern
+        textInputLayout.hint = canonicalizedDatePattern?.lowercase()
         textInputEditText.removeTextChangedListener(textWatcher)
 
         val questionnaireItemViewItemDateAnswer =
