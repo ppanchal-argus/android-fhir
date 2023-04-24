@@ -20,7 +20,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginHorizontal="@dimen/item_margin_horizontal"
-    android:layout_marginTop="@dimen/padding_default"
+    android:layout_marginVertical="@dimen/item_margin_vertical"
     android:orientation="vertical"
 >
 
@@ -28,7 +28,7 @@
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/header_item_padding"
+        android:layout_marginBottom="@dimen/header_margin_bottom"
     />
 
     <com.google.android.fhir.datacapture.views.MediaView
@@ -45,7 +45,6 @@
         app:strokeColor="#A6A6A6"
         app:strokeWidth="2dp"
     >
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/checkbox_group"

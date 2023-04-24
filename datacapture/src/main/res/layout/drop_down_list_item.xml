@@ -23,8 +23,8 @@
         android:background="@color/transparent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawablePadding="@dimen/item_margin_horizontal"
-        android:padding="@dimen/padding_drop_down"
+        android:drawablePadding="@dimen/icon_drawable_padding"
+        android:padding="@dimen/drop_down_padding"
         android:singleLine="false"
         android:textAppearance="?attr/questionnaireDropDownTextStyle"
     />
