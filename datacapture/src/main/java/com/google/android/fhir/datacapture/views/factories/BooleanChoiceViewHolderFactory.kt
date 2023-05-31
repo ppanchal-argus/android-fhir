@@ -17,6 +17,7 @@
 package com.google.android.fhir.datacapture.views.factories
 
 import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import androidx.constraintlayout.helper.widget.Flow
@@ -56,6 +57,7 @@ internal object BooleanChoiceViewHolderFactory :
       override fun bind(questionnaireViewItem: QuestionnaireViewItem) {
         this.questionnaireViewItem = questionnaireViewItem
         header.bind(questionnaireViewItem)
+        header.showRequiredOrOptionalTextInHeaderView(questionnaireViewItem)
         val choiceOrientation =
           questionnaireViewItem.questionnaireItem.choiceOrientation
             ?: ChoiceOrientationTypes.VERTICAL
@@ -135,13 +137,11 @@ internal object BooleanChoiceViewHolderFactory :
         layoutParams =
           LinearLayout.LayoutParams(
             when (choiceOrientation) {
-              ChoiceOrientationTypes.HORIZONTAL -> {
-                0
-              }
-              ChoiceOrientationTypes.VERTICAL -> LinearLayout.LayoutParams.MATCH_PARENT
+              ChoiceOrientationTypes.HORIZONTAL -> /* width= */ 0
+              ChoiceOrientationTypes.VERTICAL -> ViewGroup.LayoutParams.MATCH_PARENT
             },
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            1.0f
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            /* weight= */ 1.0f
           )
       }
 
