@@ -24,14 +24,13 @@ import com.google.android.fhir.datacapture.extensions.variableExpressions
 import org.hl7.fhir.exceptions.FHIRException
 import org.hl7.fhir.r4.model.Base
 import org.hl7.fhir.r4.model.Expression
+import org.hl7.fhir.r4.model.Quantity
 import org.hl7.fhir.r4.model.Questionnaire
 import org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemComponent
 import org.hl7.fhir.r4.model.QuestionnaireResponse
 import org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemComponent
 import org.hl7.fhir.r4.model.Resource
 import org.hl7.fhir.r4.model.Type
-import org.hl7.fhir.r4.model.Quantity
-import org.hl7.fhir.r4.utils.FHIRPathEngine
 import timber.log.Timber
 
 /**
@@ -461,18 +460,18 @@ object ExpressionEvaluator {
         "Unsupported expression language, language should be text/fhirpath"
       }
 
-      dependentVariables.forEach{ (_, data) ->
-        if (data is Quantity && data.hasCode()){
-         when(data.code){
-           "mo" -> {
-             data.unit = "month"
-             data.code = null
-           }
-           "a" -> {
-             data.unit = "year"
-             data.code = null
-           }
-         }
+      dependentVariables.forEach { (_, data) ->
+        if (data is Quantity && data.hasCode()) {
+          when (data.code) {
+            "mo" -> {
+              data.unit = "month"
+              data.code = null
+            }
+            "a" -> {
+              data.unit = "year"
+              data.code = null
+            }
+          }
         }
       }
       fhirPathEngine
