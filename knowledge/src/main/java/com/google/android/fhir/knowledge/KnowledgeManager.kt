@@ -146,6 +146,10 @@ internal constructor(
     knowledgeDatabase.close()
   }
 
+  fun clearDatabase() {
+    knowledgeDatabase.clearAllTables()
+  }
+
   companion object {
     private const val DB_NAME = "knowledge.db"
 
