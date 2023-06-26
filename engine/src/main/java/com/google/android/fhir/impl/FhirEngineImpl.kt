@@ -76,6 +76,9 @@ internal class FhirEngineImpl(private val database: Database, private val contex
     return database.getLocalChange(type, id)?.toLocalChange()
   }
 
+  override suspend fun getAllLocalChanges(): List<LocalChange?> {
+    return database.getAllLocalChanges().map { squashedLocalChange -> squashedLocalChange.toLocalChange()  }
+  }
   override suspend fun purge(type: ResourceType, id: String, forcePurge: Boolean) {
     database.purge(type, id, forcePurge)
   }
