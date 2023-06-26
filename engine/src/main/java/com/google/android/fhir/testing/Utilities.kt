@@ -172,6 +172,18 @@ object TestFhirEngineImpl : FhirEngine {
     )
   }
 
+  override suspend fun getAllLocalChanges(): List<LocalChange?> {
+    return mutableListOf(
+      LocalChange(
+        resourceType = ResourceType.Patient.name,
+        resourceId = "123",
+        payload = "{}",
+        token = LocalChangeToken(listOf()),
+        type = LocalChange.Type.INSERT
+      )
+    )
+  }
+
   override suspend fun purge(type: ResourceType, id: String, forcePurge: Boolean) {}
 }
 
