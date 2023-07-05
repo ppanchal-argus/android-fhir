@@ -24,7 +24,6 @@ import com.google.android.fhir.datacapture.extensions.variableExpressions
 import org.hl7.fhir.exceptions.FHIRException
 import org.hl7.fhir.r4.model.Base
 import org.hl7.fhir.r4.model.Expression
-import org.hl7.fhir.r4.model.Quantity
 import org.hl7.fhir.r4.model.Questionnaire
 import org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemComponent
 import org.hl7.fhir.r4.model.QuestionnaireResponse
@@ -460,25 +459,15 @@ object ExpressionEvaluator {
         "Unsupported expression language, language should be text/fhirpath"
       }
 
-      dependentVariables.forEach { (_, data) ->
-        if (data is Quantity && data.hasCode()) {
-          when (data.code) {
-            "mo" -> {
-              data.unit = "month"
-              data.code = null
-            }
-            "a" -> {
-              data.unit = "year"
-              data.code = null
-            }
-          }
-        }
-      }
       fhirPathEngine
         .evaluate(dependentVariables, questionnaireResponse, null, null, expression.expression)
         .firstOrNull()
     } catch (exception: FHIRException) {
-      Timber.w("Could not evaluate expression with FHIRPathEngine", exception)
+      Timber.w(
+        "Could not evaluate expression with FHIRPathEngine : %s, %s",
+        expression.toString(),
+        exception.toString()
+      )
       null
     }
 }
