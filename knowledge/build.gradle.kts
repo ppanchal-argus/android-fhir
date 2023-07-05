@@ -13,12 +13,14 @@ publishArtifact(Releases.Knowledge)
 
 createJacocoTestReportTask()
 
+kotlin { jvmToolchain(11) }
+
 android {
+  namespace = "com.google.android.fhir.knowledge"
   compileSdk = Sdk.compileSdk
 
   defaultConfig {
     minSdk = Sdk.minSdk
-    targetSdk = Sdk.targetSdk
     testInstrumentationRunner = Dependencies.androidJunitRunner
     // Need to specify this to prevent junit runner from going deep into our dependencies
     testInstrumentationRunnerArguments["package"] = "com.google.android.fhir.knowledge"
@@ -37,13 +39,9 @@ android {
     }
   }
 
-  compileOptions {
-    isCoreLibraryDesugaringEnabled = true
-    sourceCompatibility = Java.sourceCompatibility
-    targetCompatibility = Java.targetCompatibility
-  }
+  compileOptions { isCoreLibraryDesugaringEnabled = true }
 
-  packagingOptions {
+  packaging {
     resources.excludes.addAll(
       listOf(
         "license.html",
@@ -65,9 +63,6 @@ android {
       )
     )
   }
-
-  kotlinOptions { jvmTarget = Java.kotlinJvmTarget.toString() }
-
   configureJacocoTestOptions()
 }
 

@@ -9,7 +9,10 @@ publishArtifact(Releases.Contrib.Barcode)
 
 createJacocoTestReportTask()
 
+kotlin { jvmToolchain(11) }
+
 android {
+  namespace = "com.google.android.fhir.datacapture.contrib.views.barcode"
   compileSdk = Sdk.compileSdk
 
   defaultConfig {
@@ -28,14 +31,9 @@ android {
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
     }
   }
-  compileOptions {
-    sourceCompatibility = Java.sourceCompatibility
-    targetCompatibility = Java.targetCompatibility
-  }
+  compileOptions {}
 
-  kotlinOptions { jvmTarget = Java.kotlinJvmTarget.toString() }
-
-  packagingOptions {
+  packaging {
     resources.excludes.addAll(
       listOf(
         "META-INF/INDEX.LIST",
