@@ -35,6 +35,7 @@ import java.time.OffsetDateTime
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -82,6 +83,7 @@ abstract class FhirSyncWorker(appContext: Context, workerParams: WorkerParameter
           setProgress(buildWorkData(it))
 
           if (it is SyncJobStatus.Finished || it is SyncJobStatus.Failed) {
+            delay(1000)
             this@launch.cancel()
           }
         }
