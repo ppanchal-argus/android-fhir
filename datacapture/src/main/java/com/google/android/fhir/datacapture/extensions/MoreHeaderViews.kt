@@ -29,7 +29,8 @@ import com.google.android.fhir.datacapture.views.QuestionnaireViewItem
 import com.google.android.material.card.MaterialCardView
 import org.hl7.fhir.r4.model.Questionnaire
 
-internal fun TextView.updateTextAndVisibility(localizedText: Spanned? = null) {
+/** Displays `localizedText` if it is not null or empty, or hides the [TextView]. */
+fun TextView.updateTextAndVisibility(localizedText: Spanned? = null) {
   text = localizedText
   visibility =
     if (localizedText.isNullOrEmpty()) {
@@ -40,7 +41,7 @@ internal fun TextView.updateTextAndVisibility(localizedText: Spanned? = null) {
 }
 
 /** Returns [VISIBLE] if any of the [view] is visible, [GONE] otherwise. */
-internal fun getHeaderViewVisibility(vararg view: TextView): Int {
+fun getHeaderViewVisibility(vararg view: TextView): Int {
   if (view.any { it.visibility == VISIBLE }) {
     return VISIBLE
   }
@@ -52,7 +53,7 @@ internal fun getHeaderViewVisibility(vararg view: TextView): Int {
  * visibility and click listener for the [helpButton] to allow users to access the help information
  * and toggles the visibility for view [helpCardView].
  */
-internal fun initHelpViews(
+fun initHelpViews(
   helpButton: Button,
   helpCardView: MaterialCardView,
   helpTextView: TextView,
@@ -114,7 +115,7 @@ private fun toggle(
  * Appends ' *' to [Questionnaire.QuestionnaireItemComponent.localizedTextSpanned] text if
  * [Questionnaire.QuestionnaireItemComponent.required] is true.
  */
-internal fun appendAsteriskToQuestionText(
+fun appendAsteriskToQuestionText(
   context: Context,
   questionnaireViewItem: QuestionnaireViewItem
 ): Spanned {
