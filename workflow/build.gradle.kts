@@ -14,12 +14,14 @@ publishArtifact(Releases.Workflow)
 
 createJacocoTestReportTask()
 
+kotlin { jvmToolchain(11) }
+
 android {
+  namespace = "com.google.android.fhir.workflow"
   compileSdk = Sdk.compileSdk
 
   defaultConfig {
     minSdk = Sdk.minSdkWorkflow
-    targetSdk = Sdk.targetSdk
     testInstrumentationRunner = Dependencies.androidJunitRunner
     // Need to specify this to prevent junit runner from going deep into our dependencies
     testInstrumentationRunnerArguments["package"] = "com.google.android.fhir.workflow"
@@ -44,12 +46,7 @@ android {
     }
   }
 
-  compileOptions {
-    sourceCompatibility = Java.sourceCompatibility
-    targetCompatibility = Java.targetCompatibility
-  }
-
-  packagingOptions {
+  packaging {
     resources.excludes.addAll(
       listOf(
         "license.html",
@@ -74,12 +71,10 @@ android {
     )
   }
 
-  kotlinOptions { jvmTarget = Java.kotlinJvmTarget.toString() }
-
   configureJacocoTestOptions()
 }
 
-afterEvaluate { configureFirebaseTestLab() }
+afterEvaluate { configureFirebaseTestLabForLibraries() }
 
 configurations {
   all {

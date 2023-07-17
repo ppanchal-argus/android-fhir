@@ -9,20 +9,14 @@ plugins {
   id(Plugins.BuildPlugins.jetbrainsKotlinAndroid)
 }
 
+kotlin { jvmToolchain(11) }
+
 android {
+  namespace = "com.google.android.fhir.benchmark"
   compileSdk = Sdk.compileSdk
-
-  compileOptions {
-    sourceCompatibility = Java.sourceCompatibility
-    targetCompatibility = Java.targetCompatibility
-  }
-
-  kotlinOptions { jvmTarget = Java.kotlinJvmTarget.toString() }
 
   defaultConfig {
     minSdk = Sdk.minSdkWorkflow
-    targetSdk = Sdk.targetSdk
-
     testInstrumentationRunner = "androidx.benchmark.junit4.AndroidBenchmarkRunner"
     testInstrumentationRunnerArguments["androidx.benchmark.output.enable"] = "true"
   }
@@ -39,7 +33,7 @@ android {
       )
     }
   }
-  packagingOptions {
+  packaging {
     resources.excludes.addAll(
       listOf(
         "license.html",
