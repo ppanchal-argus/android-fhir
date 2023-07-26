@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2022-2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 package com.google.android.fhir.datacapture.views.factories
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import androidx.constraintlayout.helper.widget.Flow
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import com.google.android.fhir.datacapture.R
 import com.google.android.fhir.datacapture.extensions.ChoiceOrientationTypes
 import com.google.android.fhir.datacapture.extensions.choiceOrientation
@@ -76,11 +76,11 @@ internal object CheckBoxGroupViewHolderFactory :
           }
         }
         if (questionnaireViewItem.answerOption.size == 1) {
-          checkboxCardView.strokeWidth = 0
-          checkboxCardView.setCardBackgroundColor(Color.parseColor("#00000000"))
+          checkboxCardView.background =
+            ContextCompat.getDrawable(header.context, R.drawable.card_background_without_stroke)
         } else {
-          checkboxCardView.strokeWidth = 2
-          checkboxCardView.setCardBackgroundColor(Color.parseColor("#FFFFFF"))
+          checkboxCardView.background =
+            ContextCompat.getDrawable(header.context, R.drawable.card_background_with_stroke)
         }
         questionnaireViewItem.answerOption
           .map { answerOption -> View.generateViewId() to answerOption }
