@@ -75,7 +75,7 @@ internal object CheckBoxGroupViewHolderFactory :
             flow.setWrapMode(Flow.WRAP_NONE)
           }
         }
-        if (questionnaireViewItem.answerOption.size == 1) {
+        if (questionnaireViewItem.enabledAnswerOptions.size == 1) {
           checkboxCardView.background =
             ContextCompat.getDrawable(header.context, R.drawable.card_background_without_stroke)
         } else {
