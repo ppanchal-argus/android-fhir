@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2022-2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ interface FhirEngine {
   /**
    * Searches the database and returns a list resources according to the [search] specifications.
    */
-  suspend fun <R : Resource> search(search: Search): List<R>
+  suspend fun <R : Resource> search(search: Search): List<SearchResult<R>>
 
   /**
    * Synchronizes the [upload] result in the database. [upload] operation may result in multiple
@@ -132,4 +132,55 @@ suspend inline fun <reified R : Resource> FhirEngine.get(id: String): R {
  */
 suspend inline fun <reified R : Resource> FhirEngine.delete(id: String) {
   delete(getResourceType(R::class.java), id)
+}
+
+typealias SearchParamName = String
+
+/**
+ * Contains a FHIR resource that satisfies the search criteria in the query together with any
+ * referenced resources as specified in the query.
+ */
+data class SearchResult<R : Resource>(
+  /** Matching resource as per the query. */
+  val resource: R,
+  /** Matching referenced resources as per the [Search.include] criteria in the query. */
+  val included: Map<SearchParamName, List<Resource>>?,
+  /** Matching referenced resources as per the [Search.revInclude] criteria in the query. */
+  val revIncluded: Map<ResourceType, Map<SearchParamName, List<Resource>>>?
+) {
+  override fun equals(other: Any?) =
+    other is SearchResult<*> &&
+      equalsShallow(resource, other.resource) &&
+      equalsShallow(included, other.included) &&
+      equalsShallow(revIncluded, other.revIncluded)
+
+  private fun equalsShallow(first: Resource, second: Resource) =
+    first.resourceType == second.resourceType && first.logicalId == second.logicalId
+
+  private fun equalsShallow(
+    first: Map<SearchParamName, List<Resource>>?,
+    second: Map<SearchParamName, List<Resource>>?
+  ) =
+    if (first != null && second != null && first.size == second.size) {
+      first.entries.zip(second.entries).all { (x, y) ->
+        x.key == y.key &&
+          x.value.size == y.value.size &&
+          x.value.zip(y.value).all { (x, y) -> equalsShallow(x, y) }
+      }
+    } else {
+      first?.size == second?.size
+    }
+
+  @JvmName("equalsShallowRevInclude")
+  private fun equalsShallow(
+    first: Map<ResourceType, Map<SearchParamName, List<Resource>>>?,
+    second: Map<ResourceType, Map<SearchParamName, List<Resource>>>?
+  ) =
+    if (first != null && second != null && first.size == second.size) {
+      first.entries.zip(second.entries).all { (x, y) ->
+        x.key == y.key && x.value.size == y.value.size && equalsShallow(x.value, y.value)
+      }
+    } else {
+      first?.size == second?.size
+    }
 }

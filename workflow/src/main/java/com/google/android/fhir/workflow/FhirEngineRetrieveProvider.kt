@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2022-2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -74,7 +74,7 @@ internal class FhirEngineRetrieveProvider(private val fhirEngine: FhirEngine) :
       filterByCode(codePath, codes, search)
       filterByValueSet(codePath, valueSet, search)
       filterByDateRange(datePath, dateLowPath, dateHighPath, dateRange, search)
-      fhirEngine.search(search)
+      fhirEngine.search<Resource>(search).map { it.resource }
     }
   }
 

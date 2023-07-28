@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2022-2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,7 +76,8 @@ internal class FhirEngineDal(
   override fun search(resourceType: String): Iterable<IBaseResource> =
     runBlockingOrThrowMainThreadException {
       val search = Search(type = ResourceType.fromCode(resourceType))
-      knowledgeManager.loadResources(resourceType = resourceType) + fhirEngine.search(search)
+      knowledgeManager.loadResources(resourceType = resourceType) +
+        fhirEngine.search<Resource>(search).map { it.resource }
     }
 
   override fun searchByUrl(resourceType: String, url: String): Iterable<IBaseResource> =
