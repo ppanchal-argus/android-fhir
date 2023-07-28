@@ -221,7 +221,8 @@ internal constructor(
   fun evaluateLibrary(
     libraryUrl: String,
     patientId: String,
-    expressions: Set<String>): IBaseParameters {
+    expressions: Set<String>
+  ): IBaseParameters {
     return evaluateLibrary(libraryUrl, patientId, null, expressions)
   }
 

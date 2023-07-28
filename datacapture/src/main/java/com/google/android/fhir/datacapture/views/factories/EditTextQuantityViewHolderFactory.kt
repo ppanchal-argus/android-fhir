@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2022-2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -100,4 +100,7 @@ internal object EditTextQuantityViewHolderFactory :
     }
 }
 
-const val QUANTITY_INPUT_TYPE = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_SIGNED or InputType.TYPE_NUMBER_FLAG_DECIMAL
+const val QUANTITY_INPUT_TYPE =
+  InputType.TYPE_CLASS_NUMBER or
+    InputType.TYPE_NUMBER_FLAG_SIGNED or
+    InputType.TYPE_NUMBER_FLAG_DECIMAL

@@ -100,7 +100,7 @@ interface FhirEngine {
    * Retrieve all [LocalChange] from the database
    * @return List of [LocalChange]. If there is no local change return `null`.
    */
-  suspend fun getAllLocalChanges(): List<LocalChange?>
+  suspend fun getAllLocalChanges(): List<LocalChange>
 
   /**
    * Purges a resource from the database based on resource type and id without any deletion of data

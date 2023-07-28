@@ -178,7 +178,7 @@ object TestFhirEngineImpl : FhirEngine {
     )
   }
 
-  override suspend fun getAllLocalChanges(): List<LocalChange?> {
+  override suspend fun getAllLocalChanges(): List<LocalChange> {
     return mutableListOf(
       LocalChange(
         resourceType = ResourceType.Patient.name,
