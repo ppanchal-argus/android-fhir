@@ -180,14 +180,15 @@ object TestFhirEngineImpl : FhirEngine {
     )
   }
 
-  override suspend fun getAllLocalChanges(): List<LocalChange?> {
+  override suspend fun getAllLocalChanges(): List<LocalChange> {
     return mutableListOf(
       LocalChange(
         resourceType = ResourceType.Patient.name,
         resourceId = "123",
         payload = "{}",
         token = LocalChangeToken(listOf()),
-        type = LocalChange.Type.INSERT
+        type = LocalChange.Type.INSERT,
+        timestamp = Instant.now()
       )
     )
   }
