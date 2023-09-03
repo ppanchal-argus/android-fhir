@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2022-2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ class QuestionnaireReviewAdapterTest {
               .setType(Questionnaire.QuestionnaireItemType.GROUP),
             QuestionnaireResponse.QuestionnaireResponseItemComponent(),
             validationResult = Valid,
-            answersChangedCallback = { _, _, _, _ -> },
+            answersChangedCallback = { _, _, _, _ -> }
           )
         )
       )
@@ -69,7 +69,7 @@ class QuestionnaireReviewAdapterTest {
               .setType(Questionnaire.QuestionnaireItemType.GROUP),
             QuestionnaireResponse.QuestionnaireResponseItemComponent(),
             validationResult = Valid,
-            answersChangedCallback = { _, _, _, _ -> },
+            answersChangedCallback = { _, _, _, _ -> }
           )
         ),
         QuestionnaireAdapterItem.Question(
@@ -78,7 +78,7 @@ class QuestionnaireReviewAdapterTest {
               .setType(Questionnaire.QuestionnaireItemType.DISPLAY),
             QuestionnaireResponse.QuestionnaireResponseItemComponent(),
             validationResult = Valid,
-            answersChangedCallback = { _, _, _, _ -> },
+            answersChangedCallback = { _, _, _, _ -> }
           )
         ),
       )

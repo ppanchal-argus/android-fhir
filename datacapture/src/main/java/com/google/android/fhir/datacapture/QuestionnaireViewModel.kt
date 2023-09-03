@@ -67,6 +67,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.withIndex
+import kotlinx.coroutines.launch
 import org.hl7.fhir.r4.model.Base
 import org.hl7.fhir.r4.model.Element
 import org.hl7.fhir.r4.model.Questionnaire
@@ -75,6 +76,7 @@ import org.hl7.fhir.r4.model.QuestionnaireResponse
 import org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent
 import org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemComponent
 import org.hl7.fhir.r4.model.Resource
+import org.hl7.fhir.r4.model.StringType
 import timber.log.Timber
 
 internal class QuestionnaireViewModel(application: Application, state: SavedStateHandle) :
@@ -304,7 +306,7 @@ internal class QuestionnaireViewModel(application: Application, state: SavedStat
    * - partial answer, the entered input is not a valid answer
    */
   private val answersChangedCallback:
-    (
+    suspend (
       QuestionnaireItemComponent,
       QuestionnaireResponseItemComponent,
       List<QuestionnaireResponseItemAnswerComponent>,
@@ -329,9 +331,9 @@ internal class QuestionnaireViewModel(application: Application, state: SavedStat
         questionnaireResponseItem.addNestedItemsToAnswer(questionnaireItem)
       }
       modifiedQuestionnaireResponseItemSet.add(questionnaireResponseItem)
+      modificationCount.update { it + 1 }
 
       updateDependentQuestionnaireResponseItems(questionnaireItem, questionnaireResponseItem)
-
       modificationCount.update { it + 1 }
     }
 
@@ -487,6 +489,7 @@ internal class QuestionnaireViewModel(application: Application, state: SavedStat
               questionnaireResponse.allItems.find { qrItem -> qrItem.linkId == qItem.linkId }
             )
           }
+          modificationCount.update { it + 1 }
         }
       }
       .map { it.value }
@@ -496,7 +499,7 @@ internal class QuestionnaireViewModel(application: Application, state: SavedStat
         initialValue = QuestionnaireState(items = emptyList(), displayMode = DisplayMode.InitMode)
       )
 
-  private fun updateDependentQuestionnaireResponseItems(
+  private suspend fun updateDependentQuestionnaireResponseItems(
     updatedQuestionnaireItem: QuestionnaireItemComponent,
     updatedQuestionnaireResponseItem: QuestionnaireResponseItemComponent?,
   ) {
@@ -505,7 +508,9 @@ internal class QuestionnaireViewModel(application: Application, state: SavedStat
         updatedQuestionnaireResponseItem,
         questionnaire,
         questionnaireResponse,
-        questionnaireItemParentMap
+        questionnaireItemParentMap,
+        questionnaireLaunchContextMap,
+        xFhirQueryResolver
       )
       .forEach { (questionnaireItem, calculatedAnswers) ->
         // update all response item with updated values
@@ -528,7 +533,7 @@ internal class QuestionnaireViewModel(application: Application, state: SavedStat
       }
   }
 
-  private fun resolveCqfExpression(
+  private suspend fun resolveCqfExpression(
     questionnaireItem: QuestionnaireItemComponent,
     questionnaireResponseItem: QuestionnaireResponseItemComponent,
     element: Element,
@@ -544,8 +549,20 @@ internal class QuestionnaireViewModel(application: Application, state: SavedStat
       questionnaireItem,
       questionnaireResponseItem,
       cqfExpression,
-      questionnaireItemParentMap
+      questionnaireItemParentMap,
+      questionnaireLaunchContextMap,
+      xFhirQueryResolver
     )
+  }
+
+  private suspend fun resolveDynamicText(
+    questionnaireItem: QuestionnaireItemComponent,
+    questionnaireResponseItem: QuestionnaireResponseItemComponent,
+    element: StringType,
+  ): String? {
+    return resolveCqfExpression(questionnaireItem, questionnaireResponseItem, element)
+      .firstOrNull()
+      ?.primitiveValue()
   }
 
   private fun removeDisabledAnswers(
@@ -557,7 +574,9 @@ internal class QuestionnaireViewModel(application: Application, state: SavedStat
       questionnaireResponseItem.answer.filterNot { ans ->
         disabledAnswers.any { ans.value.equalsDeep(it.value) }
       }
-    answersChangedCallback(questionnaireItem, questionnaireResponseItem, validAnswers, null)
+    viewModelScope.launch {
+      answersChangedCallback(questionnaireItem, questionnaireResponseItem, validAnswers, null)
+    }
   }
 
   /**
