@@ -53,12 +53,11 @@ class PlanDefinitionProcessorJavaTest {
   fun testCollectWith() {
     val careplan =
       PlanDefinition.Assert.that(
-          "emcaredt012",
-          "Test-patient",
-          "Test-encounter",
+          "IMMZ.DT.08.Measles",
+          "IMMZ-Patient-NoVaxAdult-m"
         )
         .withData("/plan-definition/rule-filters/che-patient-data.json")
-        .withLibrary("/plan-definition/rule-filters/bundle-collect-with.json")
+        .withLibrary("/plan-definition/rule-filters/IMMZ.DT.08.Measles.json")
         .apply()
     print(FhirContext.forR4().newJsonParser().encodeResourceToString(careplan.carePlan))
     return careplan.isEqualsTo("/plan-definition/rule-filters/collect-with-careplan.json")
