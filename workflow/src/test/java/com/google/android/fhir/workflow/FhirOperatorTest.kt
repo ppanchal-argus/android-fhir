@@ -83,30 +83,18 @@ class FhirOperatorTest {
 
   @Test
   fun generateCarePlan() = runBlockingOnWorkerThread {
-    loadFile("/plan-definition/rule-filters/RuleFilters-1.0.0-bundle.json", ::importToFhirEngine)
-    loadFile("/plan-definition/rule-filters/tests-Reportable-bundle.json", ::importToFhirEngine)
-    loadFile("/plan-definition/rule-filters/tests-NotReportable-bundle.json", ::importToFhirEngine)
+    loadFile("/plan-definition/rule-filters/che-patient-data.json", ::importToFhirEngine)
+    loadFile("/plan-definition/rule-filters/bundle-collect-with.json", ::importToFhirEngine)
 
-    loadFile("/first-contact/01-registration/patient-charity-otala-1.json", ::importToFhirEngine)
-    loadFile(
-      "/first-contact/02-enrollment/careplan-charity-otala-1-pregnancy-plan.xml",
-      ::importToFhirEngine
+    val careplan = fhirOperator.generateCarePlan(
+            planDefinitionId = "emcaredt012",
+            patientId = "Test-patient",
+            encounterId = "Test-encounter"
     )
-    loadFile(
-      "/first-contact/02-enrollment/episodeofcare-charity-otala-1-pregnancy-episode.xml",
-      ::importToFhirEngine
-    )
-    loadFile(
-      "/first-contact/03-contact/encounter-anc-encounter-charity-otala-1.xml",
-      ::importToFhirEngine
-    )
-
+    print(FhirContext.forR4().newJsonParser().encodeResourceToString(careplan))
+    print(FhirContext.forR4().newJsonParser().encodeResourceToString(careplan))
     assertThat(
-        fhirOperator.generateCarePlan(
-          planDefinitionId = "plandefinition-RuleFilters-1.0.0",
-          patientId = "Reportable",
-          encounterId = "reportable-encounter"
-        )
+        careplan
       )
       .isNotNull()
   }
