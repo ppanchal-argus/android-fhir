@@ -119,8 +119,11 @@ internal class QuestionnaireValidationErrorViewModel : ViewModel() {
       ?.flattened()
       ?.filter { invalidFields.contains(it.linkId) }
       ?.map {
-        if (it.text.isNullOrEmpty()) it.localizedFlyoverSpanned.toString()
-        else it.localizedTextSpanned?.toSpanned().toString()
+        if (it.text.isNullOrEmpty()) {
+          it.localizedFlyoverSpanned.toString()
+        } else {
+          it.localizedTextSpanned?.toSpanned().toString()
+        }
       }
       ?: emptyList()
   }

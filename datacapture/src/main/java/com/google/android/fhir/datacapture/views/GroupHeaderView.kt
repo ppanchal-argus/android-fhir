@@ -49,7 +49,7 @@ class GroupHeaderView(context: Context, attrs: AttributeSet?) : LinearLayout(con
       helpCardView = findViewById(R.id.helpCardView),
       helpTextView = findViewById(R.id.helpText),
       helpTextViewMore = findViewById(R.id.textviewViewMore),
-      questionnaireItem = questionnaireViewItem.questionnaireItem
+      questionnaireItem = questionnaireViewItem.questionnaireItem,
     )
     prefix.updateTextAndVisibility(questionnaireViewItem.questionnaireItem.localizedPrefixSpanned)
     // CQF expression takes precedence over static question text

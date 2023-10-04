@@ -190,8 +190,8 @@ object TestFhirEngineImpl : FhirEngine {
         payload = "{}",
         token = LocalChangeToken(listOf()),
         type = LocalChange.Type.INSERT,
-        timestamp = Instant.now()
-      )
+        timestamp = Instant.now(),
+      ),
     )
   }
 

@@ -58,7 +58,7 @@ fun initHelpViews(
   helpCardView: MaterialCardView,
   helpTextView: TextView,
   helpTextViewMore: TextView,
-  questionnaireItem: Questionnaire.QuestionnaireItemComponent
+  questionnaireItem: Questionnaire.QuestionnaireItemComponent,
 ) {
   helpCardView.visibility = GONE
   helpButton.visibility =
@@ -87,7 +87,7 @@ fun initHelpViews(
             }
             return true
           }
-        }
+        },
       )
       // Set a click listener on the TextView and the "View More" text view
       helpTextView.setOnClickListener { toggle(helpTextView, helpTextViewMore) }

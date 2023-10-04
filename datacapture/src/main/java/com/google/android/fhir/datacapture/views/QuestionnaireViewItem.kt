@@ -106,12 +106,13 @@ data class QuestionnaireViewItem(
       "Questionnaire item with linkId ${questionnaireItem.linkId} has repeated answers."
     }
     /** add the unit from the extension */
-    if (!questionnaireItem.repeats &&
+    if (
+      !questionnaireItem.repeats &&
         questionnaireItem.type === Questionnaire.QuestionnaireItemType.fromCode("quantity")
     ) {
       val unitExtensions =
         questionnaireItem.getExtensionsByUrl(
-          "http://hl7.org/fhir/StructureDefinition/questionnaire-unit"
+          "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
         )
       if (unitExtensions.isNotEmpty()) {
         val unitExtension: Extension = unitExtensions.first()
