@@ -118,11 +118,12 @@ private fun toggle(
  */
 fun appendAsteriskToQuestionText(
   context: Context,
-  questionnaireViewItem: QuestionnaireViewItem
+  questionnaireViewItem: QuestionnaireViewItem,
 ): Spanned {
   return SpannableStringBuilder().apply {
     questionnaireViewItem.questionText?.let { append(it) }
-    if (questionnaireViewItem.questionViewTextConfiguration.showAsterisk &&
+    if (
+      questionnaireViewItem.questionViewTextConfiguration.showAsterisk &&
         questionnaireViewItem.questionnaireItem.required &&
         !questionnaireViewItem.questionnaireItem.localizedTextSpanned.isNullOrEmpty()
     ) {

@@ -44,8 +44,8 @@ internal constructor(
 
   /**
    * * Checks if the [implementationGuides] are present in DB. If necessary, downloads the
-   * dependencies from NPM and imports data from the package manager (populates the metadata of the
-   * FHIR Resources)
+   *   dependencies from NPM and imports data from the package manager (populates the metadata of
+   *   the FHIR Resources)
    */
   suspend fun install(vararg implementationGuides: ImplementationGuide) {
     TODO("[1937]Not implemented yet ")
@@ -72,7 +72,7 @@ internal constructor(
     }
   }
 
-  /** Imports the Knolwedge Artifact from the provided [file] to the default dependency. */
+  /** Imports the Knowledge Artifact from the provided [file] to the default dependency. */
   suspend fun install(file: File) {
     importFile(null, file)
   }
@@ -135,7 +135,7 @@ internal constructor(
         metadataResource?.url,
         metadataResource?.name,
         metadataResource?.version,
-        file
+        file,
       )
     knowledgeDao.insertResource(igId, res)
   }
@@ -158,7 +158,7 @@ internal constructor(
     /** Creates an [KnowledgeManager] backed by the Room DB. */
     fun create(context: Context) =
       KnowledgeManager(
-        Room.databaseBuilder(context, KnowledgeDatabase::class.java, DB_NAME).build()
+        Room.databaseBuilder(context, KnowledgeDatabase::class.java, DB_NAME).build(),
       )
 
     /** Creates an [KnowledgeManager] backed by the in-memory DB. */

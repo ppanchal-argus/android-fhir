@@ -102,7 +102,7 @@ internal object CheckBoxGroupViewHolderFactory :
       private fun populateViewWithAnswerOption(
         viewId: Int,
         answerOption: Questionnaire.QuestionnaireItemAnswerOptionComponent,
-        choiceOrientation: ChoiceOrientationTypes
+        choiceOrientation: ChoiceOrientationTypes,
       ) {
         val checkboxLayout =
           LayoutInflater.from(checkboxGroup.context).inflate(R.layout.check_box_view, null)
@@ -114,7 +114,7 @@ internal object CheckBoxGroupViewHolderFactory :
               answerOption.itemAnswerOptionImage(checkboxGroup.context),
               null,
               null,
-              null
+              null,
             )
             isChecked = questionnaireViewItem.isAnswerOptionSelected(answerOption)
             layoutParams =
@@ -123,7 +123,7 @@ internal object CheckBoxGroupViewHolderFactory :
                   ChoiceOrientationTypes.HORIZONTAL -> ViewGroup.LayoutParams.WRAP_CONTENT
                   ChoiceOrientationTypes.VERTICAL -> ViewGroup.LayoutParams.MATCH_PARENT
                 },
-                ViewGroup.LayoutParams.WRAP_CONTENT
+                ViewGroup.LayoutParams.WRAP_CONTENT,
               )
             setOnClickListener {
               when (isChecked) {
@@ -165,7 +165,7 @@ internal object CheckBoxGroupViewHolderFactory :
                   questionnaireViewItem.removeAnswer(
                     QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent().apply {
                       value = answerOption.value
-                    }
+                    },
                   )
                 }
               }
@@ -178,7 +178,7 @@ internal object CheckBoxGroupViewHolderFactory :
       private fun displayValidationResult(validationResult: ValidationResult) {
         when (validationResult) {
           is NotValidated,
-          Valid -> header.showErrorText(isErrorTextVisible = false)
+          Valid, -> header.showErrorText(isErrorTextVisible = false)
           is Invalid -> {
             header.showErrorText(errorText = validationResult.getSingleStringValidationMessage())
           }
