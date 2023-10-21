@@ -176,14 +176,6 @@ internal constructor(
     return jsonParser.parseResource(FileInputStream(resourceEntity.resourceFile))
   }
 
-  fun close() {
-    knowledgeDatabase.close()
-  }
-
-  fun clearDatabase() {
-    knowledgeDatabase.clearAllTables()
-  }
-
   companion object {
     private const val DB_NAME = "knowledge.db"
     private const val DOWNLOADED_DATA_SUB_DIR = ".fhir_package_cache"
