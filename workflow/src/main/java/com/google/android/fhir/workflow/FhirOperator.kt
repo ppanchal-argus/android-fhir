@@ -186,8 +186,17 @@ internal constructor(
    * from a worker thread or it may throw [BlockingMainThreadException] exception.
    */
   @WorkerThread
+  @Deprecated(
+    "Use generateCarePlan with the planDefinition's url instead.",
+    ReplaceWith("this.generateCarePlan(CanonicalType, String)"),
+  )
   fun generateCarePlan(planDefinitionId: String, subject: String): IBaseResource {
     return generateCarePlan(planDefinitionId, subject, encounterId = null)
+  }
+
+  @WorkerThread
+  fun generateCarePlan(planDefinition: CanonicalType, subject: String): IBaseResource {
+    return generateCarePlan(planDefinition, subject, encounterId = null)
   }
 
   /**
@@ -197,6 +206,10 @@ internal constructor(
    * from a worker thread or it may throw [BlockingMainThreadException] exception.
    */
   @WorkerThread
+  @Deprecated(
+    "Use generateCarePlan with the planDefinition's url instead.",
+    ReplaceWith("this.generateCarePlan(CanonicalType, String, String)"),
+  )
   fun generateCarePlan(
     planDefinitionId: String,
     subject: String,
@@ -205,6 +218,33 @@ internal constructor(
     return planDefinitionProcessor.apply(
       /* id = */ IdType("PlanDefinition", planDefinitionId),
       /* canonical = */ null,
+      /* planDefinition = */ null,
+      /* subject = */ subject,
+      /* encounterId = */ encounterId,
+      /* practitionerId = */ null,
+      /* organizationId = */ null,
+      /* userType = */ null,
+      /* userLanguage = */ null,
+      /* userTaskContext = */ null,
+      /* setting = */ null,
+      /* settingContext = */ null,
+      /* parameters = */ null,
+      /* useServerData = */ null,
+      /* bundle = */ null,
+      /* prefetchData = */ null,
+      libraryProcessor,
+    ) as IBaseResource
+  }
+
+  @WorkerThread
+  fun generateCarePlan(
+    planDefinition: CanonicalType,
+    subject: String,
+    encounterId: String?,
+  ): IBaseResource {
+    return planDefinitionProcessor.apply(
+      /* id = */ null,
+      /* canonical = */ planDefinition,
       /* planDefinition = */ null,
       /* subject = */ subject,
       /* encounterId = */ encounterId,
